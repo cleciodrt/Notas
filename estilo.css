@@ -19,7 +19,7 @@ body {
   background-size: 300px;
   background-position: center;
   background-image: url("https://img.freepik.com/vetores-gratis/fundo-de-listras-azuis-pastel-padrao-simples_53876-115657.jpg");
-  /* background: #232428; */
+  background: #232428;
 }
 
 body:before {
