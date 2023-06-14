@@ -1,0 +1,251 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  position: absolute;
+  flex-direction: column;
+  background-size: 300px;
+  background-position: center;
+  background-image: url("https://img.freepik.com/vetores-gratis/fundo-de-listras-azuis-pastel-padrao-simples_53876-115657.jpg");
+  /* background: #232428; */
+}
+
+body:before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  position: absolute;
+  background: black;
+}
+
+.movimentacao:after {
+  z-index: 2;
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+/* =Ferramentas
+-----------------------------------------------------------------------------------------------------------------------------*/
+
+header {
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+}
+
+/* =Base
+--------------------------------------------------------------*/
+
+#ordens {
+  width: 30%;
+  height: 70px;
+  display: flex;
+  color: white;
+  min-width: 400px;
+  margin: 20px 50px;
+  position: relative;
+  border-radius: 100px;
+  background: #232428;
+  border: 3px solid white;
+  justify-content: space-between;
+  filter: drop-shadow(0 3px 3px rgba(63, 63, 63, 0.445));
+}
+
+/* =Grupo1
+--------------------------------------------------------------*/
+
+#ferramentas {
+  display: flex;
+}
+
+#ferramentas:first-child {
+  padding-left: 30px;
+}
+
+#ferramentas .iconesFuncoes {
+  padding: 14px;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 100%;
+  background: #0e151c;
+  text-shadow: 0 0 20px white;
+}
+
+/* =Rotulo
+--------------------------------------------------------------*/
+
+#rotulo {
+  display: flex;
+  align-items: center;
+}
+
+#rotulo h1 {
+  font-size: 25px;
+  cursor: default;
+  padding-right: 20px;
+  border-right: 3px solid white;
+}
+
+/* =Botão adiciona Nota
+--------------------------------------------------------------*/
+
+#criar {
+  width: 100px;
+  line-height: 64px;
+  text-align: center;
+}
+
+/* =Grupo2
+--------------------------------------------------------------*/
+
+#visualizar {
+  display: flex;
+}
+
+#visualizar:last-child {
+  padding-right: 30px;
+}
+
+/* =Quantidade de notas
+--------------------------------------------------------------*/
+
+#quantidade {
+  font-size: 20px;
+  line-height: 64px;
+}
+
+/* =Blocos
+-----------------------------------------------------------------------------------------------------------------------------*/
+
+main {
+  width: 100%;
+  position: relative;
+  height: calc(100% - 110px);
+}
+
+#principal {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+/* =Base
+--------------------------------------------------------------*/
+
+@keyframes desaparecer {
+  0% {
+    opacity: 1;
+    scale: 1;
+  } 100% {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+.bloco {
+  overflow: hidden;
+  position: absolute;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  display: inline-flex;
+  background: darkcyan;
+  flex-direction: column;
+  transition: background 200ms linear;
+  filter: drop-shadow(0 3px 3px rgba(63 63 63 / 40%));
+}
+
+/*
+.aparecer {
+  animation: aparecer 200ms forwards;
+}
+*/
+
+.desaparecer {
+  animation: desaparecer 200ms forwards;
+}
+
+/* =Div1
+--------------------------------------------------------------*/
+
+#acessorios {
+  height: 50px;
+  display: flex;
+  max-width: 240px;
+}
+
+#acessorios div {
+  width: 33.33%;
+  color: #fff;
+  font-size: 20px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#acessorios i {
+  pointer-events: none;
+  text-shadow: 1px 1px 1px black;
+}
+
+.colorir,
+.deletar {
+  cursor: pointer;
+}
+
+.mover {
+  cursor: move;
+}
+
+/* =Div2
+--------------------------------------------------------------*/
+
+.nota {
+  padding: 5px;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 18px;
+  min-width: 240px;
+  min-height: 240px;
+  font-family: 'Poppins', sans-serif;
+  background: rgb(0 0 0 / 30%);
+}
+
+.nota::placeholder {
+  font-weight: 900;
+  color: rgba(255 255 255 / 0.6);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
