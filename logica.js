@@ -215,7 +215,7 @@ window.ontouchmove = window.onmousemove = (evento) => {
 };
 
 window.onoffline = () => {
-
+ 
   // =Criar------------------------------------------------------------------------------------------------------------------->
   const mostrar = criar.onclick = (evento) => {
 
