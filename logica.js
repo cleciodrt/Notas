@@ -1,5 +1,5 @@
 const cores = ["darkred", "darkgreen", "dodgerblue", "darkgrey", "darkorange", "darksalmon", "darkcyan", "rosybrown"];
-const parenteNotas = document.querySelector("#principal");
+const parenteNotas = document.querySelector("#principal"), principal = document.querySelector("main");
 var blocoInteiro = moverEste = quantosBlocos = undefined;
 var conteudoNotas = [];
 var coluna = linha = 0;
@@ -197,6 +197,7 @@ window.onload = () => {
 
   carregar(this);
   
+  // =Desgrudar movimentação-------------------------------------------------------------------------------------------------> 
   document.body.onmouseup = () => {
     moverEste = undefined;
     document.body.classList.remove('movimentacao');
@@ -205,6 +206,16 @@ window.onload = () => {
   // =Troca de plataforma----------------------------------------------------------------------------------------------------> 
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
+  }
+
+  // =Esconder Painel Rolagem------------------------------------------------------------------------------------------------> 
+  principal.onscroll = () => {
+    rolagemY = principal.scrollTop;
+    if (rolagemY > 0) {
+      document.querySelector(".celular header").classList.add('painelOculto');
+    } else {
+      document.querySelector(".celular header").classList.remove('painelOculto');
+    }
   }
 
 };
@@ -229,16 +240,34 @@ window.onresize = () => {
 
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
+
+    var x = 0;
+    while (x < document.querySelectorAll(".bloco").length) {
+      document.querySelectorAll(`.bloco`)[x].style.top = `${ 0 }px`;
+      document.querySelectorAll(`.bloco`)[x].style.left = `${ 0 }px`;
+      x++;
+    }
   } else {
     document.body.classList.remove('celular');
+
+    var x = 0, coluna = linha = 0;
+    while (x < document.querySelectorAll(".bloco").length) {
+
+      if (coluna > (innerWidth - 400) && linha < 600) {
+        linha += 300;
+      }
+
+      if (coluna === 1000) {
+        coluna = 0;
+      }
+      coluna += 100;
+      
+      document.querySelectorAll(`.bloco`)[x].style.top = `${ linha }px`;
+      document.querySelectorAll(`.bloco`)[x].style.left = `${ coluna }px`;
+      
+      x++;
+
+    };
   };
 
 };
-
-
-
-
-
-
-
-

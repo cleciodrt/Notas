@@ -9,6 +9,10 @@
   font-family: 'Lato', sans-serif;
 }
 
+html, body {
+  background: #232428;
+}
+
 body {
   width: 100%;
   height: 100%;
@@ -16,10 +20,6 @@ body {
   overflow: hidden;
   position: absolute;
   flex-direction: column;
-  background-size: 300px;
-  background-position: center;
-  background-image: url("https://img.freepik.com/vetores-gratis/fundo-de-listras-azuis-pastel-padrao-simples_53876-115657.jpg");
-  background: #232428;
 }
 
 body:before {
@@ -44,7 +44,9 @@ body:before {
 
 header {
   width: 100%;
+  height: 110px;
   overflow: hidden;
+  transition: height 200ms linear;
 }
 
 /* =Base
@@ -59,7 +61,6 @@ header {
   margin: 20px 50px;
   position: relative;
   border-radius: 100px;
-  background: #232428;
   border: 3px solid white;
   justify-content: space-between;
   filter: drop-shadow(0 3px 3px rgba(63, 63, 63, 0.445));
@@ -137,9 +138,6 @@ main {
   width: 100%;
   position: relative;
   height: calc(100% - 171px);
-}
-
-#principal {
 }
 
 /* =Base
@@ -233,6 +231,14 @@ main {
 /* =Modulo celular
 -----------------------------------------------------------------------------------------------------------------------------*/
 
+.celular header {
+  height: 180px;
+}
+
+.celular .painelOculto {
+  height: 0px;
+}
+
 .celular #ordens {
   width: 50%;
   height: 140px;
@@ -245,22 +251,25 @@ main {
   font-size: 35px;
 }
 
+.celular main {
+  height: 100%;
+  overflow: auto;
+}
+
 .celular #principal {
   gap: 20px;
   width: 100%;
-  height: 100%;
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  overflow: scroll;
 }
 
 .celular .bloco {
-  width: 48%;
   height: 500px;
-  max-width: 48%;
   max-height: 500px;
   position: relative;
+  width: calc(50% - 10px);
+  max-width: calc(50% - 10px);
 }
 
 .celular #acessorios {
@@ -286,20 +295,3 @@ main {
   min-height: 425px;
   padding: 5px 30px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
