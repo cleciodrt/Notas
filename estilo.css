@@ -136,7 +136,7 @@ header {
 main {
   width: 100%;
   position: relative;
-  height: calc(100% - 110px);
+  height: calc(100% - 171px);
 }
 
 #principal {
@@ -248,9 +248,11 @@ main {
 .celular #principal {
   gap: 20px;
   width: 100%;
+  height: 100%;
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
+  overflow: scroll;
 }
 
 .celular .bloco {
