@@ -119,7 +119,7 @@ header {
 }
 
 #visualizar:last-child {
-  padding-right: 30px;
+  padding-right: 50px;
 }
 
 /* =Quantidade de notas
@@ -139,7 +139,8 @@ main {
   height: calc(100% - 110px);
 }
 
-#principal {}
+#principal {
+}
 
 /* =Base
 --------------------------------------------------------------*/
@@ -233,8 +234,9 @@ main {
 -----------------------------------------------------------------------------------------------------------------------------*/
 
 .celular #ordens {
+  width: 50%;
   height: 140px;
-  border-radius: 10px;
+  border-radius: 30px;
 }
 
 .celular #ordens h1,
@@ -250,11 +252,12 @@ main {
   display: flex;
   flex-wrap: wrap;
 }
+
 .celular .bloco {
   width: 48%;
   height: 500px;
-  /* max-width: 48%; */
-  /* max-height: 500px; */
+  max-width: 48%;
+  max-height: 500px;
   position: relative;
 }
 
