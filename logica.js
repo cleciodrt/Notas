@@ -1,7 +1,7 @@
 const cores = ["darkred", "darkgreen", "dodgerblue", "darkgrey", "darkorange", "darksalmon", "darkcyan", "rosybrown"];
 const parenteNotas = document.querySelector("#principal"), principal = document.querySelector("main");
 var blocoInteiro = moverEste = quantosBlocos = undefined;
-var conteudoNotas = [];
+var conteudoNotas = [], corDasNotas = [];
 var coluna = linha = 0;
 var conteudo = true;
 
@@ -32,36 +32,24 @@ window.onload = () => {
       `;
 
       // =Quantidade---------------------------------------------------------------------------------------------------------->
-      
       blocoInteiro = document.querySelectorAll(".bloco"); // Está sendo usado em Global
       quantosBlocos = blocoInteiro.length; // Diz quantos blocos existem
-      quantidade.innerText = quantosBlocos; 
-      
+      quantidade.innerText = quantosBlocos;
+
       // =Posicionamento------------------------------------------------------------------------------------------------------>
-      
       if (outerWidth > 500) {
-        if (coluna < (innerWidth - 400)) {
-          coluna = quantosBlocos * 100;
-          if (quantosBlocos > 10) {
-            coluna = (quantosBlocos - 10) * 100;
-          }
-          if (quantosBlocos > 20) {
-            coluna = (quantosBlocos - 20) * 100;
-          }
-        } else {
-          coluna = 100;
-          if (linha < 600) {
-            linha += 300;
-          }
+        if (coluna === 1000 && linha < 600) {
+          coluna = 0;
+          linha += 300;
+        } else if (coluna === 1000 && linha === 600) {
+          coluna = 0;
+          linha = 600;
         }
+        coluna += 100;
       }
-      
+
       document.querySelector(`#e${ id }`).style.top = `${ linha }px`;
       document.querySelector(`#e${ id }`).style.left = `${ coluna }px`;
-
-      // =Cor----------------------------------------------------------------------------------------------------------------->
-      
-      blocoInteiro[blocoInteiro.length - 1].style.background = cores[Math.round(Math.random() * cores.length)];
 
       // =Funções------------------------------------------------------------------------------------------------------------->
       let rodada = indiceCor = 0;
@@ -82,10 +70,25 @@ window.onload = () => {
           switch (funcao) {
             case 'colorir':
 
+              /*corDasNotas = [
+                {posicao: numero, cor: cores[indiceCor]}
+              ];*/
+
+              console.log(corDasNotas[numero])
+              if (corDasNotas[numero] === undefined) {
+                corDasNotas.push(
+                  {posicao: numero, cor: cores[indiceCor]}
+                );
+              }
+              corDasNotas.map((item, index) => {
+              });
+              
+              localStorage.setItem('corDasNotas', JSON.stringify(corDasNotas));
+              
               objeto.style.background = cores[indiceCor];
               indiceCor++;
               if (indiceCor === cores.length) indiceCor = 0;
-              
+
               break;
             case 'mover':
 
@@ -137,21 +140,30 @@ window.onload = () => {
               break;
             default:
           };
-        
+          
           // =Sobreposição---------------------------------------------------------------------------------------------------->
           for (const x of blocoInteiro) {
             x.style.zIndex = 1;
           }
           objeto.style.zIndex = Number(quantosBlocos) + 1;
-
+          
         };
-
+        
         if (outerWidth < 500) {
           blocoInteiro[rodada].onclick = () => funcoes;
         }
-
+        
         rodada += 1;
       };
+      
+      // =Animação ao adicionar----------------------------------------------------------------------------------------------->
+      if (evento.type === 'click') {
+        const este = document.querySelector(`#e${ id }`);
+        este.classList.add('aparecer');
+        este.onanimationend = () => {
+          este.classList.remove('aparecer');
+        }
+      }
 
       // =Sobrepõe / Reescrever----------------------------------------------------------------------------------------------->
       let i = 0;
@@ -175,6 +187,9 @@ window.onload = () => {
   // =Carregar---------------------------------------------------------------------------------------------------------------> 
   const carregar = (procurar) => {
 
+    if (localStorage.getItem('corDasNotas') !== null) {
+      corDasNotas = JSON.parse(localStorage.getItem('corDasNotas'));
+    }
     const criarNota = Number(JSON.parse(localStorage.getItem('conteudoNotas'))[0]);
     
     if (isNaN(criarNota) !== true && criarNota > 0) {
@@ -188,6 +203,11 @@ window.onload = () => {
         if (x === Number(criarNota)) {
           clearInterval(repeticao);
           conteudo = false;
+
+          // =Cor------------------------------------------------------------------------------------------------------------->
+          /*corDasNotas.map((item, index) => {
+            blocoInteiro[corDasNotas[index].posicao].style.background = corDasNotas[index].cor;
+          })*/
         };
 
       }, 5);
@@ -241,7 +261,7 @@ window.onresize = () => {
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
 
-    var x = 0;
+    var x = coluna = linha = 0;
     while (x < document.querySelectorAll(".bloco").length) {
       document.querySelectorAll(`.bloco`)[x].style.top = `${ 0 }px`;
       document.querySelectorAll(`.bloco`)[x].style.left = `${ 0 }px`;
@@ -250,18 +270,18 @@ window.onresize = () => {
   } else {
     document.body.classList.remove('celular');
 
-    var x = 0, coluna = linha = 0;
+    var x = coluna = linha = 0;
     while (x < document.querySelectorAll(".bloco").length) {
-
-      if (coluna > (innerWidth - 400) && linha < 600) {
-        linha += 300;
-      }
-
-      if (coluna === 1000) {
+      
+      if (coluna === 1000 && linha < 600) {
         coluna = 0;
+        linha += 300;
+      } else if (coluna === 1000 && linha === 600) {
+        coluna = 0;
+        linha = 600;
       }
       coluna += 100;
-      
+
       document.querySelectorAll(`.bloco`)[x].style.top = `${ linha }px`;
       document.querySelectorAll(`.bloco`)[x].style.left = `${ coluna }px`;
       

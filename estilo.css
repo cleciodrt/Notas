@@ -140,10 +140,15 @@ main {
   height: calc(100% - 171px);
 }
 
+#principal {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* =Base
 --------------------------------------------------------------*/
 
-@keyframes desaparecer {
+@keyframes visibilidade {
   0% {
     opacity: 1;
     scale: 1;
@@ -156,23 +161,20 @@ main {
 .bloco {
   overflow: hidden;
   position: absolute;
-  margin-bottom: 2px;
   border-radius: 10px;
   display: inline-flex;
-  background: darkcyan;
+  background: #232428;
   flex-direction: column;
+  border: 1px solid aliceblue;
   transition: background 200ms linear;
-  filter: drop-shadow(0 3px 3px rgba(63 63 63 / 40%));
 }
 
-/*
 .aparecer {
-  animation: aparecer 200ms forwards;
+  animation: visibilidade 200ms reverse forwards;
 }
-*/
 
 .desaparecer {
-  animation: desaparecer 200ms forwards;
+  animation: visibilidade 200ms forwards;
 }
 
 /* =Div1
@@ -233,6 +235,8 @@ main {
 
 .celular header {
   height: 180px;
+  background: #18191c;
+  border-radius: 0 0 30px 30px;
 }
 
 .celular .painelOculto {
@@ -240,15 +244,43 @@ main {
 }
 
 .celular #ordens {
-  width: 50%;
-  height: 140px;
-  border-radius: 30px;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.celular #ordens #ferramentas:first-child {
+  padding-left: 0;
 }
 
 .celular #ordens h1,
 .celular #ordens i,
 .celular #ordens span {
   font-size: 35px;
+}
+
+.celular #rotulo h1 {
+  padding: 0 50px;
+  border-right: none;
+}
+
+.celular #criar {
+  display: block;
+}
+
+.celular #criar .iconesFuncoes {
+  padding: 0;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  font-size: 50px;
+  text-shadow: none;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 5px solid white;
 }
 
 .celular main {
@@ -261,7 +293,7 @@ main {
   width: 100%;
   padding: 20px;
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row-reverse wrap-reverse;
 }
 
 .celular .bloco {
