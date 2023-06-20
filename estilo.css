@@ -201,12 +201,13 @@ main {
 
 .celular header {
   height: 180px;
+  padding: 30px;
   border-radius: 30px;
   background: rgba(255 255 255 / 10%);
 }
 
 .celular #ferramentas {
-  margin: 20px;
+  margin: 0;
   padding: 0;
   height: 100%;
   max-width: 100%;
