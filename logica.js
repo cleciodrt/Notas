@@ -4,7 +4,6 @@ var blocoInteiro = moverEste = quantosBlocos = undefined;
 var conteudoNotas = [], corDasNotas = [];
 var coluna = linha = 0;
 var conteudo = true;
-l = 0;
 
 window.onload = () => {
 
@@ -37,21 +36,6 @@ window.onload = () => {
       blocoInteiro = document.querySelectorAll(".bloco"); // Está sendo usado em Global
       quantosBlocos = blocoInteiro.length; // Diz quantos blocos existem
       notas.innerText = quantosBlocos;
-
-      // =Posicionamento------------------------------------------------------------------------------------------------------>
-      if (outerWidth > 500) {
-        if (coluna === 1000 && linha < 680) {
-          coluna = 0;
-          linha += 340;
-        } else if (coluna === 1000 && linha === 680) {
-          coluna = 0;
-          linha = 600;
-        }
-        coluna += 100;
-      }
-
-      document.querySelector(`#e${ id }`).style.top = `${ linha }px`;
-      document.querySelector(`#e${ id }`).style.left = `${ coluna }px`;
 
       // =Funções------------------------------------------------------------------------------------------------------------->
       let rodada = indiceCor = 0;
@@ -113,6 +97,9 @@ window.onload = () => {
                 conteudoNotas.splice(numero + 1, 1);
                 conteudoNotas[0] = blocoInteiro.length;
                 localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
+
+                delete corDasNotas[numero];
+                localStorage.setItem('corDasNotas', JSON.stringify(corDasNotas));
               }
 
               break;
@@ -120,23 +107,19 @@ window.onload = () => {
 
               objeto.onkeyup = (digitando) => {
                   
-                let ids = [];
-                for (const x of blocoInteiro) {
-                  ids.push(x.id);
-                }
-                numero = ids.indexOf(objeto.id);
-              
-                if (isNaN(conteudoNotas[0]) === false) {
-                  conteudoNotas[0] = ids.length;
-                } else {
-                  conteudoNotas.push(ids.length);
-                }
+                if (digitando.key !== 'Tab') {
+                  if (isNaN(conteudoNotas[0]) === false) {
+                    conteudoNotas[0] = ids.length;
+                  } else {
+                    conteudoNotas.push(ids.length);
+                  }
 
-                conteudoNotas[numero + 1] = {
-                  titulo: digitando.target.value,
-                  nota: digitando.view.blocoInteiro[numero].children[2].value,
-                };
-                localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
+                  conteudoNotas[numero + 1] = {
+                    titulo: digitando.target.value,
+                    nota: digitando.view.blocoInteiro[numero].children[2].value,
+                  };
+                  localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
+                }
 
               };
 
@@ -145,23 +128,19 @@ window.onload = () => {
 
               objeto.onkeyup = (digitando) => {
                 
-                let ids = [];
-                for (const x of blocoInteiro) {
-                  ids.push(x.id);
-                }
-                numero = ids.indexOf(objeto.id);
-              
-                if (isNaN(conteudoNotas[0]) === false) {
-                  conteudoNotas[0] = ids.length;
-                } else {
-                  conteudoNotas.push(ids.length);
-                }
+                if (digitando.key !== 'Tab') {
+                  if (isNaN(conteudoNotas[0]) === false) {
+                    conteudoNotas[0] = ids.length;
+                  } else {
+                    conteudoNotas.push(ids.length);
+                  }
 
-                conteudoNotas[numero + 1] = {
-                  titulo: digitando.view.blocoInteiro[numero].children[1].value,
-                  nota: digitando.target.value,
-                };
-                localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
+                  conteudoNotas[numero + 1] = {
+                    titulo: digitando.view.blocoInteiro[numero].children[1].value,
+                    nota: digitando.target.value,
+                  };
+                  localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
+                }
 
               };
 
@@ -195,19 +174,16 @@ window.onload = () => {
 
       // =Sobrepõe / Reescrever----------------------------------------------------------------------------------------------->
       let i = 0;
+      if (i == conteudoNotas[0] || conteudoNotas[0] === undefined) {
+        conteudo = false;
+      }
+      
       for (const x of blocoInteiro) {
         x.style.zIndex = 1;
 
-        i++;
+        i++
         x.children[1].value = conteudoNotas[i].titulo;
         x.children[2].value = conteudoNotas[i].nota;
-        if (x.children[1].value === 'undefined' || x.children[2].value === 'undefined') {
-          x.children[1].value = x.children[2].value = '';
-        }
-      }
-      
-      if (i == conteudoNotas[0] || conteudoNotas[0] === undefined) {
-        conteudo = false;
       }
     };
 
@@ -219,28 +195,37 @@ window.onload = () => {
     if (localStorage.getItem('corDasNotas') !== null) {
       corDasNotas = JSON.parse(localStorage.getItem('corDasNotas'));
     }
-    const criarNota = Number(JSON.parse(localStorage.getItem('conteudoNotas'))[0]);
-    
-    if (isNaN(criarNota) !== true && criarNota > 0) {
-      let x = 0;
-      const repeticao = setInterval(() => {
-        
-        conteudoNotas = JSON.parse(localStorage.getItem('conteudoNotas'));
-        x++;
-        mostrar(this);
-        
-        if (x === Number(criarNota)) {
-          clearInterval(repeticao);
-          conteudo = false;
 
-          // =Cor------------------------------------------------------------------------------------------------------------->
-          for (const x of corDasNotas) {
-            blocoInteiro[x.posicao].style.background = x.cor;
-          }
-        };
+    if (localStorage.getItem('conteudoNotas') !== null) {
 
-      }, 5);
-    };
+      const criarNota = Number(JSON.parse(localStorage.getItem('conteudoNotas'))[0]);
+      if (isNaN(criarNota) !== true && criarNota > 0 && criarNota !== undefined) {
+        let x = 0;
+        const repeticao = setInterval(() => {
+          
+          conteudoNotas = JSON.parse(localStorage.getItem('conteudoNotas'));
+          x++;
+          mostrar(this);
+          
+          if (x === Number(criarNota)) {
+            clearInterval(repeticao);
+            conteudo = false;
+  
+            // =Cor----------------------------------------------------------------------------------------------------------->
+            for (const x of corDasNotas) {
+              if (x !== null) {
+                if (x.cor !== '#232428') {
+                  blocoInteiro[x.posicao].style.border = '1px solid transparent';
+                }
+                blocoInteiro[x.posicao].style.background = x.cor;
+              }
+            }
+          };
+  
+        }, 5);
+      };
+
+    }
 
   };
 
@@ -259,6 +244,12 @@ window.onload = () => {
 
 };
 
+window.onkeyup = (evento) => {
+  // if (evento.key === 'q') {
+  //   mostrar();
+  // }
+}
+
 // =Movimentação-------------------------------------------------------------------------------------------------------------> 
 window.ontouchmove = window.onmousemove = (evento) => {
 
@@ -266,6 +257,7 @@ window.ontouchmove = window.onmousemove = (evento) => {
   if (moverEste != undefined) {
 
     if (evento.y > 120 || evento.x > porcentagem) {
+      moverEste.style.position = 'absolute';
       moverEste.style.top = `${ evento.y - 134 }px`;
       moverEste.style.left = `${ evento.x - 40 }px`;
     };
@@ -279,34 +271,8 @@ window.onresize = () => {
 
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
-
-    var x = coluna = linha = 0;
-    while (x < document.querySelectorAll(".bloco").length) {
-      document.querySelectorAll(`.bloco`)[x].style.top = `${ 0 }px`;
-      document.querySelectorAll(`.bloco`)[x].style.left = `${ 0 }px`;
-      x++;
-    }
   } else {
     document.body.classList.remove('celular');
-
-    var x = coluna = linha = 0;
-    while (x < document.querySelectorAll(".bloco").length) {
-      
-      if (coluna === 1000 && linha < 680) {
-        coluna = 0;
-        linha += 340;
-      } else if (coluna === 1000 && linha === 680) {
-        coluna = 0;
-        linha = 600;
-      }
-      coluna += 100;
-
-      document.querySelectorAll(`.bloco`)[x].style.top = `${ linha }px`;
-      document.querySelectorAll(`.bloco`)[x].style.left = `${ coluna }px`;
-      
-      x++;
-
-    };
   };
 
 };
