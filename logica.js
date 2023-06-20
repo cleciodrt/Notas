@@ -1,17 +1,18 @@
-const cores = ["darkred", "darkgreen", "dodgerblue", "darkgrey", "darkorange", "darksalmon", "darkcyan", "rosybrown"];
+const cores = ["darkred", "darkgreen", "dodgerblue", "darkgrey", "darkorange", "darksalmon", "darkcyan", "rosybrown", "#232428"];
 const parenteNotas = document.querySelector("#principal"), principal = document.querySelector("main");
 var blocoInteiro = moverEste = quantosBlocos = undefined;
 var conteudoNotas = [], corDasNotas = [];
 var coluna = linha = 0;
 var conteudo = true;
+l = 0;
 
 window.onload = () => {
 
   // =Criar------------------------------------------------------------------------------------------------------------------->
-  const mostrar = criar.onclick = (evento) => {
+  const mostrar = nova.onclick = (evento) => {
 
-    if (conteudo || conteudoNotas[0] == quantidade.innerText) {
-
+    if (conteudo || conteudoNotas[0] == notas.innerText) {
+      
       const id = new Date().getTime();
       parenteNotas.innerHTML += 
       `
@@ -27,21 +28,22 @@ window.onload = () => {
               <i class="fa-sharp fa-solid fa-trash"></i>
             </div>
           </hgroup>
-          <textarea class="nota" placeholder="Escreva aqui"></textarea>
+          <input type="text" placeholder="Titulo" class="titulo" name="titulo" />
+          <textarea class="nota" placeholder="Nota" name="nota"></textarea>
         </hgroup>
       `;
 
       // =Quantidade---------------------------------------------------------------------------------------------------------->
       blocoInteiro = document.querySelectorAll(".bloco"); // Está sendo usado em Global
       quantosBlocos = blocoInteiro.length; // Diz quantos blocos existem
-      quantidade.innerText = quantosBlocos;
+      notas.innerText = quantosBlocos;
 
       // =Posicionamento------------------------------------------------------------------------------------------------------>
       if (outerWidth > 500) {
-        if (coluna === 1000 && linha < 600) {
+        if (coluna === 1000 && linha < 680) {
           coluna = 0;
-          linha += 300;
-        } else if (coluna === 1000 && linha === 600) {
+          linha += 340;
+        } else if (coluna === 1000 && linha === 680) {
           coluna = 0;
           linha = 600;
         }
@@ -70,21 +72,18 @@ window.onload = () => {
           switch (funcao) {
             case 'colorir':
 
-              /*corDasNotas = [
-                {posicao: numero, cor: cores[indiceCor]}
-              ];*/
+              corDasNotas[numero] = {
+                posicao: numero,
+                cor: cores[indiceCor],
+              };
 
-              console.log(corDasNotas[numero])
-              if (corDasNotas[numero] === undefined) {
-                corDasNotas.push(
-                  {posicao: numero, cor: cores[indiceCor]}
-                );
-              }
-              corDasNotas.map((item, index) => {
-              });
-              
               localStorage.setItem('corDasNotas', JSON.stringify(corDasNotas));
               
+              if (cores[indiceCor] !== '#232428') {
+                objeto.style.border = "1px solid transparent";
+              } else {
+                objeto.style.border = "1px solid white";
+              }
               objeto.style.background = cores[indiceCor];
               indiceCor++;
               if (indiceCor === cores.length) indiceCor = 0;
@@ -108,13 +107,38 @@ window.onload = () => {
               objeto.onanimationend = () => {
                 objeto.remove();
                 blocoInteiro = document.querySelectorAll(".bloco");
-                quantidade.innerText = blocoInteiro.length;
+                notas.innerText = blocoInteiro.length;
                 quantosBlocos--;
 
                 conteudoNotas.splice(numero + 1, 1);
                 conteudoNotas[0] = blocoInteiro.length;
                 localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
               }
+
+              break;
+            case 'titulo':
+
+              objeto.onkeyup = (digitando) => {
+                  
+                let ids = [];
+                for (const x of blocoInteiro) {
+                  ids.push(x.id);
+                }
+                numero = ids.indexOf(objeto.id);
+              
+                if (isNaN(conteudoNotas[0]) === false) {
+                  conteudoNotas[0] = ids.length;
+                } else {
+                  conteudoNotas.push(ids.length);
+                }
+
+                conteudoNotas[numero + 1] = {
+                  titulo: digitando.target.value,
+                  nota: digitando.view.blocoInteiro[numero].children[2].value,
+                };
+                localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
+
+              };
 
               break;
             case 'nota':
@@ -132,7 +156,11 @@ window.onload = () => {
                 } else {
                   conteudoNotas.push(ids.length);
                 }
-                conteudoNotas[numero + 1] = digitando.target.value;
+
+                conteudoNotas[numero + 1] = {
+                  titulo: digitando.view.blocoInteiro[numero].children[1].value,
+                  nota: digitando.target.value,
+                };
                 localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
 
               };
@@ -170,10 +198,11 @@ window.onload = () => {
       for (const x of blocoInteiro) {
         x.style.zIndex = 1;
 
-        x.children[1].value = conteudoNotas[i + 1];
         i++;
-        if (x.children[1].value === 'undefined') {
-          x.children[1].value = '';
+        x.children[1].value = conteudoNotas[i].titulo;
+        x.children[2].value = conteudoNotas[i].nota;
+        if (x.children[1].value === 'undefined' || x.children[2].value === 'undefined') {
+          x.children[1].value = x.children[2].value = '';
         }
       }
       
@@ -205,9 +234,9 @@ window.onload = () => {
           conteudo = false;
 
           // =Cor------------------------------------------------------------------------------------------------------------->
-          /*corDasNotas.map((item, index) => {
-            blocoInteiro[corDasNotas[index].posicao].style.background = corDasNotas[index].cor;
-          })*/
+          for (const x of corDasNotas) {
+            blocoInteiro[x.posicao].style.background = x.cor;
+          }
         };
 
       }, 5);
@@ -226,16 +255,6 @@ window.onload = () => {
   // =Troca de plataforma----------------------------------------------------------------------------------------------------> 
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
-  }
-
-  // =Esconder Painel Rolagem------------------------------------------------------------------------------------------------> 
-  principal.onscroll = () => {
-    rolagemY = principal.scrollTop;
-    if (rolagemY > 0) {
-      document.querySelector(".celular header").classList.add('painelOculto');
-    } else {
-      document.querySelector(".celular header").classList.remove('painelOculto');
-    }
   }
 
 };
@@ -273,10 +292,10 @@ window.onresize = () => {
     var x = coluna = linha = 0;
     while (x < document.querySelectorAll(".bloco").length) {
       
-      if (coluna === 1000 && linha < 600) {
+      if (coluna === 1000 && linha < 680) {
         coluna = 0;
-        linha += 300;
-      } else if (coluna === 1000 && linha === 600) {
+        linha += 340;
+      } else if (coluna === 1000 && linha === 680) {
         coluna = 0;
         linha = 600;
       }
