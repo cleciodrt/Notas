@@ -17,6 +17,9 @@ window.onload = () => {
       `
         <hgroup id=e${ id } class="bloco">
           <hgroup id="acessorios">
+            <div class="expandir">
+              <i class="fa-solid fa-expand fa-lg"></i>
+            </div>
             <div class="mover">
               <i class="fa-sharp fa-solid fa-arrows-up-down-left-right"></i>
             </div>
@@ -54,13 +57,22 @@ window.onload = () => {
           let numero = ids.indexOf(objeto.id);
 
           switch (funcao) {
+            case 'expandir':
+              
+              if (document.querySelectorAll('.expandir i')[numero].classList.contains('fa-expand')) {
+                document.querySelectorAll('.expandir i')[numero].classList.replace('fa-expand', 'fa-compress');
+                document.querySelector('.celular header').classList.add('sumir');
+                objeto.classList.add("completo");
+              } else {
+                document.querySelectorAll('.expandir i')[numero].classList.replace('fa-compress', 'fa-expand');        
+                document.querySelector('.celular header').classList.remove('sumir');
+                objeto.classList.remove("completo");
+              }
+
+              break;
             case 'colorir':
 
-              corDasNotas[numero] = {
-                posicao: numero,
-                cor: cores[indiceCor],
-              };
-
+              corDasNotas[numero] = cores[indiceCor];
               localStorage.setItem('corDasNotas', JSON.stringify(corDasNotas));
               
               if (cores[indiceCor] !== '#232428') {
@@ -71,7 +83,7 @@ window.onload = () => {
               objeto.style.background = cores[indiceCor];
               indiceCor++;
               if (indiceCor === cores.length) indiceCor = 0;
-
+              
               break;
             case 'mover':
 
@@ -98,9 +110,11 @@ window.onload = () => {
                 conteudoNotas[0] = blocoInteiro.length;
                 localStorage.setItem('conteudoNotas', JSON.stringify(conteudoNotas));
 
-                delete corDasNotas[numero];
+                corDasNotas.splice(numero, 1);
                 localStorage.setItem('corDasNotas', JSON.stringify(corDasNotas));
               }
+
+              document.querySelector('.celular header').classList.remove('sumir');
 
               break;
             case 'titulo':
@@ -163,7 +177,12 @@ window.onload = () => {
         rodada += 1;
       };
       
-      // =Animação ao adicionar----------------------------------------------------------------------------------------------->
+      // =Animações----------------------------------------------------------------------------------------------------------->
+      notas.classList.add("contagemNota");
+      notas.onanimationend = () => {
+        notas.classList.remove("contagemNota");
+      }
+      
       if (evento.type === 'click') {
         const este = document.querySelector(`#e${ id }`);
         este.classList.add('aparecer');
@@ -172,7 +191,7 @@ window.onload = () => {
         }
       }
 
-      // =Sobrepõe / Reescrever----------------------------------------------------------------------------------------------->
+      // =Sobrepõe / Reescreve------------------------------------------------------------------------------------------------>
       let i = 0;
       if (i == conteudoNotas[0] || conteudoNotas[0] === undefined) {
         conteudo = false;
@@ -181,9 +200,14 @@ window.onload = () => {
       for (const x of blocoInteiro) {
         x.style.zIndex = 1;
 
-        i++
-        x.children[1].value = conteudoNotas[i].titulo;
-        x.children[2].value = conteudoNotas[i].nota;
+        if (conteudoNotas[0] !== undefined && conteudoNotas[0] !== 0 && i < conteudoNotas[0]) {
+
+          blocoInteiro[i].style.background = corDasNotas[i];
+          i++;
+          x.children[1].value = conteudoNotas[i].titulo;
+          x.children[2].value = conteudoNotas[i].nota;
+
+        }
       }
     };
 
@@ -210,16 +234,6 @@ window.onload = () => {
           if (x === Number(criarNota)) {
             clearInterval(repeticao);
             conteudo = false;
-  
-            // =Cor----------------------------------------------------------------------------------------------------------->
-            for (const x of corDasNotas) {
-              if (x !== null) {
-                if (x.cor !== '#232428') {
-                  blocoInteiro[x.posicao].style.border = '1px solid transparent';
-                }
-                blocoInteiro[x.posicao].style.background = x.cor;
-              }
-            }
           };
   
         }, 5);
@@ -240,6 +254,10 @@ window.onload = () => {
   // =Troca de plataforma----------------------------------------------------------------------------------------------------> 
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
+    document.body.classList.remove('computador');
+  } else {
+    document.body.classList.add('computador');
+    document.body.classList.remove('celular');
   }
 
 };
@@ -271,7 +289,9 @@ window.onresize = () => {
 
   if (outerWidth <= 500) {
     document.body.classList.add('celular');
+    document.body.classList.remove('computador');
   } else {
+    document.body.classList.add('computador');
     document.body.classList.remove('celular');
   };
 
